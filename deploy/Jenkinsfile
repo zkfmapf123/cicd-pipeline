@@ -7,7 +7,6 @@ pipeline{
 
     parameters {
         string(name: "DEPLOY_PATH", defaultValue: "deploy", description : "path to deploy")
-
         string(name: "AWS_ACCOUNT_ID", defaultValue: "182024812696", description : "aws account id")
         string(name: "DOCKER_IMAGE_NAME", defaultValue: "demo", description : "docker image name")
         string(name: "DOCKER_TAG", defaultValue : "1.0.0", description: "docker tag")   
@@ -74,16 +73,10 @@ pipeline{
             }
         }
 
-        stage("Print AWS Credentials") {
-            steps {
-                sh "${jenkins-user}"
-            }
-        }
-
         stage("Push ECR") {
             steps {
                 script {
-                    docker.withRegistry("https://182024812696.dkr.ecr.ap-northeast-2.amazonaws.com", "ecr:ap-northeast-2:jenkins-user") {
+                    docker.withRegistry("https://${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-2.amazonaws.com", "ecr:ap-northeast-2:jenkins-user") {
                         docker.image("${DOCKER_IMAGE}").push()
                         docker.image("${DOCKER_TEST_IMAGE}").push()
                     }
