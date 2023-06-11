@@ -73,6 +73,12 @@ pipeline{
                 sh "docker build -f ${params.DEPLOY_PATH}/Dockerfile -t ${DOCKER_IMAGE} ."
             }
         }
+
+        stage("Print AWS Config") {
+            steps {
+                sh "${AWS_ACCESS_KEY}"
+            }
+        }
     
 
         // stage("Push Docker Image From ECR") {
