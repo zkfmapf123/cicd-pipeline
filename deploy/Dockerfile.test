@@ -1,0 +1,11 @@
+## Build Stage
+FROM node:16-buster-slim
+
+WORKDIR /usr/src/app
+
+COPY ../server .
+
+RUN npm i -g jest
+RUN npm install
+
+CMD [ "jest" ]

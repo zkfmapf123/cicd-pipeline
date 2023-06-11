@@ -1,0 +1,72 @@
+pipeline{
+    agent any
+
+    options {
+        parallelsAlwaysFailFast()
+    }
+
+    parameters {
+        string(name: "DEPLOY_PATH", defaultValue: "deploy", description : "path to deploy")
+    }
+
+    environment {
+        REGION = "ap-northeast-2"
+    }
+
+    stages {
+
+        stage("CI test") {
+            
+            parallel {
+                stage("test docker build") {
+                    steps {
+                        sh "docker build -f ${DEPLOY_PATH}/Dockerfile.test -t node:test ."
+                    }
+                }
+
+                stage("prod docker build") {
+                    steps {
+                        sh "docker build -f ${DEPLOY_PATH}/Dockerfile -t node:prod ."
+                    }
+                }
+            }
+
+            post {
+                success {
+                    echo "Success CI Test"
+                }
+
+                failure {
+                    echo "Fila CI Test"
+                }
+            }
+        }
+        
+
+        stage("Build Docker image") {
+            steps {
+                echo "Build Docker Image"
+            }
+
+            post {
+                success {
+                    echo "Build Success"
+                }
+
+                failure {
+                    echo "Build Failure"
+                }
+            }
+        }
+    }
+
+    post {
+        success{
+            echo "success"
+        }
+
+        failure{
+            echo "failure"
+        }
+    }
+}

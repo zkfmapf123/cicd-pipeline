@@ -1,0 +1,19 @@
+{
+  "env": "dev",
+  "public_ip": "221.151.163.17/32",
+
+  "vpc": {
+    "cidr": "10.0.0.0/16",
+    "region": "ap-northeast-2",
+    "azs": ["a", "b"]
+  },
+  "subnet": {
+    "public_cidrs": ["10.0.1.0/24", "10.0.2.0/24"],
+    "private_cidrs": ["10.0.100.0/24", "10.0.101.0/24"]
+  },
+  "ec2": {
+    "ami": "ami-0c9c942bd7bf113a2",
+    "instance_type": "t2.micro"
+  },
+  "sg": {}
+}
