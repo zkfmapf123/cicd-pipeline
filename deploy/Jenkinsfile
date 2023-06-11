@@ -76,8 +76,8 @@ pipeline{
             echo "failure"
         }
 
-        always {
-            sh "docker rmi $(docker images -f 'dangling=true' -q)"
-        }
+        // always {
+        //     sh "docker rmi $(docker images -f 'dangling=true' -q)"
+        // }
     }
 }
