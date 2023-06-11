@@ -16,15 +16,8 @@ pipeline{
     stages {
 
         stage ("Build Docker Image") {
-
-            parallel {
-                steps {
-                    sh "docker build -f ${DEPLOY_PATH}/Dockerfile -t node:prod ."
-                }
-
-                steps {
-                    sh "docker build -f ${DEPLOY_PATH}/Dockerfile.test -t node:test ."
-                }
+            steps {
+                sh "docker build -f ${DEPLOY_PATH}/Dockerfile.test -t node:test ."
             }
             
             post {
