@@ -74,22 +74,16 @@ pipeline{
             }
         }
 
-        stage("Print Jekins_usr") {
+        stage("Print AWS Config") {
             steps {
-                sh "${env.jenkins-user}"
+                script {
+                    docker.withRegistry("https://182024812696.dkr.ecr.ap-northeast-2.amazonaws.com", "ecr:ap-northeast-2:aws-credentials") {
+                        docker.image("${DOCKER_IMAGE}").push()
+                        docker.image("${DOCKER_TEST_IMAGE}").push()
+                    }
+                }
             }
         }
-
-        // stage("Print AWS Config") {
-        //     steps {
-        //         script {
-        //             docker.withRegistry("https://182024812696.dkr.ecr.ap-northeast-2.amazonaws.com", "ecr:ap-northeast-2:jenkins-user") {
-        //                 docker.image("${DOCKER_IMAGE}").push()
-        //                 docker.image("${DOCKER_TEST_IMAGE}").push()
-        //             }
-        //         }
-        //     }
-        // }
     }
 
     post {
