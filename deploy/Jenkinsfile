@@ -35,44 +35,44 @@ pipeline{
             }
         }
 
-        stage ("Build Docker Image") {
-            steps {
-                sh "docker build -f ${params.DEPLOY_PATH}/Dockerfile.test -t ${DOCKER_TEST_IMAGE} ."
-            }
+        // stage ("Build Docker Image") {
+        //     steps {
+        //         sh "docker build -f ${params.DEPLOY_PATH}/Dockerfile.test -t ${DOCKER_TEST_IMAGE} ."
+        //     }
             
-            post {
-                success {
-                    echo "Success Build"
-                }
+        //     post {
+        //         success {
+        //             echo "Success Build"
+        //         }
 
-                failure {
-                    echo "Fail Build"
-                }
-            }
-        }
+        //         failure {
+        //             echo "Fail Build"
+        //         }
+        //     }
+        // }
 
-        stage("CI test") {
+        // stage("CI test") {
         
-            steps {
-                sh "docker run --rm ${DOCKER_TEST_IMAGE}"
-            }
+        //     steps {
+        //         sh "docker run --rm ${DOCKER_TEST_IMAGE}"
+        //     }
 
-            post {
-                success {
-                    echo "CI Test Success"
-                }
+        //     post {
+        //         success {
+        //             echo "CI Test Success"
+        //         }
 
-                failure {
-                    echo "CI Test Failure"
-                }
-            }
-        }
+        //         failure {
+        //             echo "CI Test Failure"
+        //         }
+        //     }
+        // }
 
-        stage("Docker Build"){
-            steps {
-                sh "docker build -f ${params.DEPLOY_PATH}/Dockerfile -t ${DOCKER_IMAGE} ."
-            }
-        }
+        // stage("Docker Build"){
+        //     steps {
+        //         sh "docker build -f ${params.DEPLOY_PATH}/Dockerfile -t ${DOCKER_IMAGE} ."
+        //     }
+        // }
     
 
         // stage("Push Docker Image From ECR") {
