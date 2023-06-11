@@ -78,23 +78,24 @@ pipeline{
 stage("Print AWS Config") {
     steps {
         script {
-            def awsCredentials = credentials("jenkins-user")
-            println "AWS Credentials ID: ${awsCredentials.id}"
+            withCredentials([usernamePassword(credentialsId: 'jenkins-user', usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                println "AWS Credentials ID: jenkins-user"
+            }
         }
     }
 }
 
-        stage("Push ECR") {
-            steps {
-                script {
-                    docker.withRegistry("https://182024812696.dkr.ecr.ap-northeast-2.amazonaws.com", "ecr:ap-northeast-2:jenkins-user") {
-                        docker.image("${DOCKER_IMAGE}").push()
-                        docker.image("${DOCKER_TEST_IMAGE}").push()
-                    }
-                }
-            }
-        }
-    }
+    //     stage("Push ECR") {
+    //         steps {
+    //             script {
+    //                 docker.withRegistry("https://182024812696.dkr.ecr.ap-northeast-2.amazonaws.com", "ecr:ap-northeast-2:jenkins-user") {
+    //                     docker.image("${DOCKER_IMAGE}").push()
+    //                     docker.image("${DOCKER_TEST_IMAGE}").push()
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 
     post {
         success{
