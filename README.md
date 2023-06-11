@@ -61,6 +61,10 @@
 
 ![7](./public/7.png)
 
+### 7. Check To Notification
+
+![8](./public/8.png)
+
 ## Reference
 
 - t2.micro로 하니까 Docker가 못버텨주네... -> t3.small 정도는 해야함 (시간 애뺐김)
