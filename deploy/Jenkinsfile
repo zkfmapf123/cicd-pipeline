@@ -37,7 +37,7 @@ pipeline{
 
         stage ("Build Docker Image") {
             steps {
-                sh "docker build -f ${parmas.DEPLOY_PATH}/Dockerfile.test -t ${DOCKER_TEST_IMAGE} ."
+                sh "docker build -f ${params.DEPLOY_PATH}/Dockerfile.test -t ${DOCKER_TEST_IMAGE} ."
             }
             
             post {
@@ -107,9 +107,9 @@ pipeline{
             echo "failure"
         }
 
-        // cleanup {
-        //     sh("docker image prune -f")
-        //     sh("docker container prune -f")
-        // }
+        cleanup {
+            sh("docker image prune -f")
+            sh("docker container prune -f")
+        }
     }
 }
