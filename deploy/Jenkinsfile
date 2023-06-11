@@ -100,7 +100,7 @@ pipeline{
         }
 
         cleanup {
-            sh("docker image prune")
+            sh("docker image prune -a")
             sh("docker container prune -f")
         }
     }
