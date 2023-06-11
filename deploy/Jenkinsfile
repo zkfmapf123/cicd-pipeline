@@ -29,7 +29,7 @@ pipeline{
             post {
                 success {
                     slackSend(
-                        channel: "#jenkins",
+                        channel: "#jenkins-notification",
                         color: "good",
                         message: "Success : Docker build"
                     )
@@ -37,7 +37,7 @@ pipeline{
 
                 failure {
                     slackSend(
-                        channel: "#jenkins",
+                        channel: "#jenkins-notification",
                         color: "danger",
                         message: "Failure : Docker build"
                     )
@@ -54,7 +54,7 @@ pipeline{
             post {
                 success {
                     slackSend(
-                        channel: "#jenkins",
+                        channel: "#jenkins-notification",
                         color: "good",
                         message: "Success : CI Test"
                     )
@@ -62,7 +62,7 @@ pipeline{
 
                 failure {
                     slackSend(
-                        channel: "#jenkins",
+                        channel: "#jenkins-notification",
                         color: "danger",
                         message: "Failure : CI Test"
                     )
@@ -96,7 +96,7 @@ pipeline{
     post {
         success {
             slackSend(
-                channel: "#jenkins",
+                channel: "#jenkins-notification",
                 color: "good",
                 message: "Success : All Job is Clear"
             )
@@ -104,7 +104,7 @@ pipeline{
 
         failure {
             slackSend(
-                channel: "#jenkins",
+                channel: "#jenkins-notification",
                 color: "danger",
                 message: "Failure : Fail..."
             )
