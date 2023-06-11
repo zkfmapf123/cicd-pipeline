@@ -25,9 +25,6 @@ pipeline{
                 sh "docker ps -a"
             }
         }
-    }
-
-    stages {
 
         stage ("Build Docker Image") {
             steps {
@@ -72,6 +69,7 @@ pipeline{
 
     post {
         success{
+            sh "docker rmi $(docker images -f 'dangling=true' -q)"
             echo "success"
         }
 
