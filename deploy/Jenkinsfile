@@ -45,7 +45,7 @@ pipeline{
         stage("CI test") {
         
             steps {
-                sh "docker run -rm node:test /usr/src/app/jest"
+                sh "docker run --rm node:test /usr/src/app/jest"
             }
         }
         
