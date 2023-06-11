@@ -74,6 +74,16 @@ pipeline{
             }
         }
 
+    
+stage("Print AWS Config") {
+    steps {
+        script {
+            def awsCredentials = credentials("jenkins-user")
+            println "AWS Credentials ID: ${awsCredentials.id}"
+        }
+    }
+}
+
         stage("Push ECR") {
             steps {
                 script {
