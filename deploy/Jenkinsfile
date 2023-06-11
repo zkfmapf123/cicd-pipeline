@@ -16,10 +16,17 @@ pipeline{
     stages {
 
         stage ("Build Docker Image") {
-            steps {
-                sh "docker build -f ${DEPLOY_PATH}/Dockerfile -t node:test ."
-            }
 
+            parallel {
+                steps {
+                    sh "docker build -f ${DEPLOY_PATH}/Dockerfile -t node:prod ."
+                }
+
+                steps {
+                    sh "docker build -f ${DEPLOY_PATH}/Dockerfile.test -t node:test ."
+                }
+            }
+            
             post {
                 success {
                     echo "Success CI Test"
@@ -34,26 +41,26 @@ pipeline{
         stage("CI test") {
         
             steps {
-                sh "ls"
+                sh "docker images"
             }
         }
         
 
-        stage("Build Docker image") {
-            steps {
-                echo "Build Docker Image"
-            }
+        // stage("Build Docker image") {
+        //     steps {
+        //         echo "Build Docker Image"
+        //     }
 
-            post {
-                success {
-                    echo "Build Success"
-                }
+        //     post {
+        //         success {
+        //             echo "Build Success"
+        //         }
 
-                failure {
-                    echo "Build Failure"
-                }
-            }
-        }
+        //         failure {
+        //             echo "Build Failure"
+        //         }
+        //     }
+        // }
     }
 
     post {

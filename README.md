@@ -32,3 +32,7 @@
 
     chmod 777 /var/run/docker.sock
 ```
+
+## Reference
+
+- t2.micro로 하니까 Docker가 못버텨주네... -> t3.small 정도는 해야함
