@@ -75,26 +75,26 @@ pipeline{
         }
     
 
-        stage("Push Docker Image From ECR") {
+        // stage("Push Docker Image From ECR") {
             
-            steps {
-                echo "Stage Test" 
-                withEnv(["AWS_ACCESS_KEY_ID=${env.AWS_ACCESS_KEY}", "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_KEY}", "AWS_DEFAULT_REGION={REGION}"]) {
-                    sh 'aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${ECR_REPOSITORY}'
-                    sh 'docker push ${params.ECR_REGISTRY}'
-                }
-            }
+        //     steps {
+        //         echo "Stage Test" 
+        //         withEnv(["AWS_ACCESS_KEY_ID=${env.AWS_ACCESS_KEY}", "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_KEY}", "AWS_DEFAULT_REGION={REGION}"]) {
+        //             sh 'aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${ECR_REPOSITORY}'
+        //             sh 'docker push ${params.ECR_REGISTRY}'
+        //         }
+        //     }
 
-            post {
-                success {
-                    echo "Sucess Push ECR"
-                }
+        //     post {
+        //         success {
+        //             echo "Sucess Push ECR"
+        //         }
 
-                failure {
-                    echo "Failure Push ECR"
-                }
-            }
-        }
+        //         failure {
+        //             echo "Failure Push ECR"
+        //         }
+        //     }
+        // }
     }
 
     post {
@@ -109,7 +109,7 @@ pipeline{
         cleanup {
             sh("docker image prune -f")
             sh("docker container prune -f")
-            
+
         }
     }
 }
