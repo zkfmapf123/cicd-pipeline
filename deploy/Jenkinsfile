@@ -45,7 +45,7 @@ pipeline{
         stage("CI test") {
         
             steps {
-                sh "docker images"
+                sh "docker run -rm node:test /usr/src/app/jest"
             }
         }
         
@@ -75,9 +75,5 @@ pipeline{
         failure{
             echo "failure"
         }
-
-        // always {
-        //     sh "docker rmi $(docker images -f 'dangling=true' -q)"
-        // }
     }
 }
