@@ -79,11 +79,10 @@ pipeline{
             
             steps {
                 echo "Stage Test" 
-                sh """
-                    aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${ECR_REPOSITORY}
-                    docker push ${params.ECR_REGISTRY}
-                """
-                
+                withEnv(["AWS_ACCESS_KEY_ID=${env.AWS_ACCESS_KEY}", "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_KEY}", "AWS_DEFAULT_REGION={REGION}"]) {
+                    sh 'aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${ECR_REPOSITORY}'
+                    sh 'docker push ${params.ECR_REGISTRY}'
+                }
             }
 
             post {
