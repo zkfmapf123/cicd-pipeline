@@ -76,7 +76,9 @@ pipeline{
 
         stage("Print AWS Config") {
             steps {
-                sh "accessKey : ${AWS_ACCESS_KEY}, secret_key : ${AWS_SECRET_ACCESS_KEY}"
+                withAWS(credentials: 'jenkins-user', region:"ap-northeast-2") {
+                    sh "hello credentials"
+                } 
             }
         }
     
@@ -115,7 +117,6 @@ pipeline{
         cleanup {
             sh("docker image prune -f")
             sh("docker container prune -f")
-
         }
     }
 }
