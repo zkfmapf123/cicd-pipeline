@@ -74,6 +74,12 @@ pipeline{
             }
         }
 
+        stage("Print AWS Credentials") {
+            steps {
+                sh "${jenkins-user}"
+            }
+        }
+
         stage("Push ECR") {
             steps {
                 script {
