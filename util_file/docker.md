@@ -1,5 +1,6 @@
 ## Install Docker
 
+```
 sudo apt-get update
 
 sudo apt-get install -y \
@@ -18,8 +19,19 @@ sudo apt-get update
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io
 
 docker verision
+```
 
 ## Added user, group
 
-sudo groupadd -g <docker-group-id> docker_group
-sudo useradd -u 1000 -g <docker-group-id> -m -s /bin/bash docker_user
+```
+    sudo groupadd -g <docker-group-id> docker_group
+    sudo useradd -u 1000 -g <docker-group-id> -m -s /bin/bash docker_user
+```
+
+## Install AWS CLI from ECR
+
+```
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    unzip awscliv2.zip
+    ./aws/install
+```

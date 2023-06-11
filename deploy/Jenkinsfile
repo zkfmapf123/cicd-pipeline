@@ -7,10 +7,18 @@ pipeline{
 
     parameters {
         string(name: "DEPLOY_PATH", defaultValue: "deploy", description : "path to deploy")
+
+        string(name: "AWS_ACCOUNT_ID", defaultValue: "182024812696", description : "aws account id")
+        string(name: "DOCKER_IMAGE_NAME", defaultValue: "demo", description : "docker image name")
+        string(name: "DOCKER_TAG", defaultValue : "1.0.0", description: "docker tag")   
     }
 
     environment {
         REGION = "ap-northeast-2"
+        ECR_REPOSITORY = "${params.AWS_ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/ecr_practice"
+
+        DOCKER_IMAGE = "${ECR_REPOSITORY}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
+        DOCKER_TEST_IMAGE = "${ECR_REPOSITORY}/${DOCKER_IMAGE_NAME}_test:${DOCKER_TAG}"
     }
 
     stages {
@@ -28,7 +36,7 @@ pipeline{
 
         stage ("Build Docker Image") {
             steps {
-                sh "docker build -f ${DEPLOY_PATH}/Dockerfile.test -t node:test ."
+                sh "docker build -f ${DEPLOY_PATH}/Dockerfile.test -t ${DOCKER_TEST_IMAGE} ."
             }
             
             post {
@@ -45,23 +53,39 @@ pipeline{
         stage("CI test") {
         
             steps {
-                sh "docker run --rm node:test"
+                sh "docker run --rm ${DOCKER_TEST_IMAGE}"
+            }
+
+            post {
+                success {
+                    echo "CI Test Success"
+                }
+
+                failure {
+                    echo "CI Test Failure"
+                }
             }
         }
-        
+    
 
-        // stage("Build Docker image") {
+        // stage("Push Docker Image From ECR") {
+            
         //     steps {
-        //         echo "Build Docker Image"
+        //         steps {
+        //             echo "Stage Test" 
+        //             sh """
+        //                 docker push ${params.ECR_REGISTRY}
+        //             """
+        //         }
         //     }
 
         //     post {
         //         success {
-        //             echo "Build Success"
+        //             echo "Sucess Push ECR"
         //         }
 
         //         failure {
-        //             echo "Build Failure"
+        //             echo "Failure Push ECR"
         //         }
         //     }
         // }
