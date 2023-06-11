@@ -75,27 +75,27 @@ pipeline{
         }
     
 
-        stage("Push Docker Image From ECR") {
+        // stage("Push Docker Image From ECR") {
             
-            steps {
-                echo "Stage Test" 
-                sh """
-                    aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${ECR_REPOSITORY}
-                    docker push ${params.ECR_REGISTRY}
-                """
+        //     steps {
+        //         echo "Stage Test" 
+        //         sh """
+        //             aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${ECR_REPOSITORY}
+        //             docker push ${params.ECR_REGISTRY}
+        //         """
                 
-            }
+        //     }
 
-            post {
-                success {
-                    echo "Sucess Push ECR"
-                }
+        //     post {
+        //         success {
+        //             echo "Sucess Push ECR"
+        //         }
 
-                failure {
-                    echo "Failure Push ECR"
-                }
-            }
-        }
+        //         failure {
+        //             echo "Failure Push ECR"
+        //         }
+        //     }
+        // }
     }
 
     post {
