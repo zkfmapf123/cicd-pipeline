@@ -170,6 +170,11 @@ resource "aws_key_pair" "gitlab_keypair" {
     public_key = file("~/.ssh/id_rsa.pub")
 }
 
+resource "aws_eip" "eip" {  
+  instance = module.jenkins.id
+  domain = "vpc"
+}
+
 module "jenkins" {
   source = "terraform-aws-modules/ec2-instance/aws"
 

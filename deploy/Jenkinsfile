@@ -16,13 +16,9 @@ pipeline{
     stages {
 
         stage("CI test") {
-            
-            parallel {
-                stage("prod docker build") {
-                    steps {
-                        sh "docker build -f ${DEPLOY_PATH}/Dockerfile -t node:prod ."
-                    }
-                }
+        
+            steps {
+                sh "ls"
             }
 
             post {
