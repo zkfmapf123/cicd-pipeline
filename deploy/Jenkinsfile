@@ -67,6 +67,12 @@ pipeline{
                 }
             }
         }
+
+        stage("Docker Build"){
+            steps {
+                sh "docker build -f ${DEPLOY_PATH}/Dockerfile -t ${DOCKER_IMAGE} ."
+            }
+        }
     
 
         stage("Push Docker Image From ECR") {
