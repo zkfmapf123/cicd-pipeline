@@ -76,9 +76,10 @@ pipeline{
 
         stage("Print AWS Config") {
             steps {
-                withAWS(credentials: 'jenkins-user', region:"ap-northeast-2") {
-                    sh "hello credentials"
-                } 
+                docker.withRegistry("182024812696.dkr.ecr.ap-northeast-2.amazonaws.com", "ecr:ap-northeast-2:${jenkins_user}") {
+                    docker.image("${DOCKER_IMAGE}").push()
+                    docker.image("${DOCKER_TEST_IMAGE}").push()
+                }
             }
         }
     
