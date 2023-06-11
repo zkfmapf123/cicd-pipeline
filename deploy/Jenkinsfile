@@ -76,7 +76,7 @@ pipeline{
 
         stage("Print AWS Config") {
             steps {
-                sh "${AWS_ACCESS_KEY}"
+                sh "accessKey : ${AWS_ACCESS_KEY}, secret_key : ${AWS_SECRET_ACCESS_KEY}"
             }
         }
     
