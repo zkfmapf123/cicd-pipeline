@@ -76,7 +76,7 @@ pipeline{
         stage("Push ECR") {
             steps {
                 script {
-                    docker.withRegistry("https://${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-2.amazonaws.com", "ecr:ap-northeast-2:jenkins-user") {
+                    docker.withRegistry("https://${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-2.amazonaws.com", "ecr:ap-northeast-2:${jenkins-user}") {
                         docker.image("${DOCKER_IMAGE}").push()
                         docker.image("${DOCKER_TEST_IMAGE}").push()
                     }
