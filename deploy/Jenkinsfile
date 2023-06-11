@@ -76,7 +76,7 @@ pipeline{
 
         stage("Print Jekins_usr") {
             steps {
-                sh "${jenkins-user}"
+                sh "${env.jenkins-user}"
             }
         }
 
