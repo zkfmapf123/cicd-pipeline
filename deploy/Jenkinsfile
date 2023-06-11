@@ -18,6 +18,10 @@ pipeline{
         stage("CI test") {
         
             steps {
+                sh "docker build -f ${DEPLOY_PATH}/Dockerfile -t node:test ."
+            }
+
+            steps {
                 sh "ls"
             }
 
