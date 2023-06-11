@@ -69,12 +69,17 @@ pipeline{
 
     post {
         success{
-            sh "docker rmi $(docker images -f 'dangling=true' -q)"
             echo "success"
         }
 
         failure{
             echo "failure"
+        }
+
+        always {
+            script {
+                sh "docker rmi $(docker images -f 'dangling=true' -q)"
+            }
         }
     }
 }
