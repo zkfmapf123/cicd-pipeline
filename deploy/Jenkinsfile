@@ -106,5 +106,10 @@ pipeline{
         failure{
             echo "failure"
         }
+
+        cleanup {
+            sh("docker image prune -f")
+            sh("docker container prune -f")
+        }
     }
 }
