@@ -6,3 +6,5 @@ terraform.tfstate.backup
 node_modules
 .env
 dist
+
+jenkins.example

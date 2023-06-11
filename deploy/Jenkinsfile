@@ -17,8 +17,8 @@ pipeline{
         REGION = "ap-northeast-2"
         ECR_REPOSITORY = "${params.AWS_ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/ecr_practice"
 
-        DOCKER_IMAGE = "${ECR_REPOSITORY}/${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
-        DOCKER_TEST_IMAGE = "${ECR_REPOSITORY}/${DOCKER_IMAGE_NAME}_test:${DOCKER_TAG}"
+        DOCKER_IMAGE = "${ECR_REPOSITORY}/${params.DOCKER_IMAGE_NAME}:${parmas.DOCKER_TAG}"
+        DOCKER_TEST_IMAGE = "${ECR_REPOSITORY}/${params.DOCKER_IMAGE_NAME}_test:${params.DOCKER_TAG}"
     }
 
     stages {
@@ -78,13 +78,12 @@ pipeline{
         stage("Push Docker Image From ECR") {
             
             steps {
-                steps {
-                    echo "Stage Test" 
-                    sh """
-                        aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${ECR_REPOSITORY}
-                        docker push ${params.ECR_REGISTRY}
-                    """
-                }
+                echo "Stage Test" 
+                sh """
+                    aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${ECR_REPOSITORY}
+                    docker push ${params.ECR_REGISTRY}
+                """
+                
             }
 
             post {
