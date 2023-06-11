@@ -15,14 +15,9 @@ pipeline{
 
     stages {
 
-        stage("CI test") {
-        
+        stage ("Build Docker Image") {
             steps {
                 sh "docker build -f ${DEPLOY_PATH}/Dockerfile -t node:test ."
-            }
-
-            steps {
-                sh "ls"
             }
 
             post {
@@ -33,6 +28,13 @@ pipeline{
                 failure {
                     echo "Fila CI Test"
                 }
+            }
+        }
+
+        stage("CI test") {
+        
+            steps {
+                sh "ls"
             }
         }
         
