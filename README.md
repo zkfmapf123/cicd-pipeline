@@ -6,9 +6,16 @@
 
 ## Todo
 
-- [ ] GitHub -> Jenkins -> Push ECR -> EventBridge -> Lambda
-- [ ] EventBridge에서 Lambda에 함수전달
+- [x] GitHub -> Jenkins -> Push ECR -> EventBridge -> Lambda
+
+- [x] EventBridge에서 Lambda에 함수전달
+
+![9](./public/9.png)
+![10](./public/10.png)
+
 - [ ] Lambda는 오래된 이미지 삭제하고, ECS에 배포
+  - [ ] aws-cli를 활용해서 오래된 이미지 삭제
+  - [ ] 최근 이미지를 ecs에 배포
 
 ## Jenkins install
 
