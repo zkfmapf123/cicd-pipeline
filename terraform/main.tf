@@ -51,18 +51,18 @@ resource "aws_route_table_association" "mapping" {
 }
 
 ########################## ALB #####################################
-resource "aws_lb" "alb" {
+# resource "aws_lb" "alb" {
 
-    name = "self-alb"
-    internal = false # true : vpc 내부에서 접속 , false : vpc 외부에서 접속
-    load_balancer_type = "application"
-    security_groups = [aws_security_group.alb_sg.id]
-    subnets = [for subnet in aws_subnet.publics : subnet.id]
+#   name               = "self-alb"
+#   internal           = false # true : vpc 내부에서 접속 , false : vpc 외부에서 접속
+#   load_balancer_type = "application"
+#   security_groups    = [aws_security_group.alb_sg.id]
+#   subnets            = [for subnet in aws_subnet.publics : subnet.id]
 
-    tags = {
-        Name = "self_alb"
-    }
-}
+#   tags = {
+#     Name = "self_alb"
+#   }
+# }
 
 
 
@@ -70,51 +70,51 @@ resource "aws_lb" "alb" {
 ########################### Security Group ##########################
 
 resource "aws_security_group" "alb_sg" {
-    name ="alb_sg"
-    vpc_id = aws_vpc.vpc.id
+  name   = "alb_sg"
+  vpc_id = aws_vpc.vpc.id
 
-    // all traffic
-    ingress {
-        from_port = 0
-        to_port = 0
-        protocol = "-1"
-        cidr_blocks = [local.public_ip]
-    }
+  // all traffic
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = [local.public_ip]
+  }
 
-    // https
-    ingress {
-        from_port = 443
-        to_port = 443
-        protocol = "tcp"
-        cidr_blocks = [local.public_ip]
-    }
+  // https
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [local.public_ip]
+  }
 
-    // 8080
-    ingress {
-        from_port = 8080
-        to_port = 8080
-        protocol = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
+  // 8080
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
-    // gitlab instance
-    # ingress {
-    #     from_port = 443
-    #     to_port = 443
-    #     protocol = "-1"
-    #     cidr_block = [local.public_ip]
-    # }
+  // gitlab instance
+  # ingress {
+  #     from_port = 443
+  #     to_port = 443
+  #     protocol = "-1"
+  #     cidr_block = [local.public_ip]
+  # }
 
-    egress {
+  egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
-    }
+  }
 
-    tags = {
-        Name = "alb_sg"
-    }
+  tags = {
+    Name = "alb_sg"
+  }
 }
 
 resource "aws_security_group" "allow_jenkins" {
@@ -122,9 +122,9 @@ resource "aws_security_group" "allow_jenkins" {
   vpc_id = aws_vpc.vpc.id
 
   ingress {
-    from_port = 0
-    to_port = 0
-    protocol = "-1"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -136,7 +136,7 @@ resource "aws_security_group" "allow_jenkins" {
   }
 
   tags = {
-    Name= "allow_jenkins"
+    Name = "allow_jenkins"
   }
 }
 
@@ -161,18 +161,18 @@ resource "aws_security_group" "allow_jenkins" {
 
 ############################ ec2 #############################
 resource "aws_key_pair" "jenkins_keypair" {
-    key_name = "jenkins_ssh"
-    public_key = file("~/.ssh/id_rsa.pub")
+  key_name   = "jenkins_ssh"
+  public_key = file("~/.ssh/id_rsa.pub")
 }
 
 resource "aws_key_pair" "gitlab_keypair" {
-    key_name = "gitlab_ssh"
-    public_key = file("~/.ssh/id_rsa.pub")
+  key_name   = "gitlab_ssh"
+  public_key = file("~/.ssh/id_rsa.pub")
 }
 
-resource "aws_eip" "eip" {  
+resource "aws_eip" "eip" {
   instance = module.jenkins.id
-  domain = "vpc"
+  domain   = "vpc"
 }
 
 module "jenkins" {
@@ -180,16 +180,47 @@ module "jenkins" {
 
   name = "jenkins-ec2"
 
-  ami                         = local.ec2.ami
-  key_name                    = aws_key_pair.jenkins_keypair.key_name
-  instance_type               = local.ec2.instance_type
+  ami           = local.ec2.ami
+  key_name      = aws_key_pair.jenkins_keypair.key_name
+  instance_type = local.ec2.instance_type
 
   availability_zone           = values(aws_subnet.publics)[0].availability_zone
   subnet_id                   = values(aws_subnet.publics)[0].id
   vpc_security_group_ids      = [aws_security_group.allow_jenkins.id]
   associate_public_ip_address = true
 
-    tags = {
-        Name="jenkins"
+  tags = {
+    Name = "jenkins"
+  }
+}
+
+########################### Event Bridge #########################
+module "eventbridge" {
+  source   = "terraform-aws-modules/eventbridge/aws"
+  bus_name = "ecr_practice_bus"
+
+  rules = {
+    orders = {
+      event_pattern = <<EOF
+        {
+          "source": ["aws.ecr"],
+          "detail-type": ["ECR Image Action"],
+          "detail": {
+            "action-type": ["PUSH"],
+            "repository-name": ["ecr_practice"]
+          }
+        }
+      EOF
+      enabled = true
     }
+  }
+
+  targets = {
+    orders = [
+      {
+        name = "hello-world-lambda"
+        arn = "arn:aws:lambda:ap-northeast-2:182024812696:function:helloWorld"
+      }
+    ]
+  }
 }

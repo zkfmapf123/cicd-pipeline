@@ -4,6 +4,12 @@
 
 ![pipeline](./public/cicd-pipeline.png)
 
+## Todo
+
+- [ ] GitHub -> Jenkins -> Push ECR -> EventBridge -> Lambda
+- [ ] EventBridge에서 Lambda에 함수전달
+- [ ] Lambda는 오래된 이미지 삭제하고, ECS에 배포
+
 ## Jenkins install
 
 ```
