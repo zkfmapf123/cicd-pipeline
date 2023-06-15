@@ -211,14 +211,15 @@ module "eventbridge" {
           }
         }
       EOF
-      enabled = true
+      enabled       = true
     }
   }
 
   targets = {
     orders = [
       {
-        name = "hello-world-lambda"
+        name = "hello-world-lambda",
+        target_id  = "hello-world-lambda",
         arn = "arn:aws:lambda:ap-northeast-2:182024812696:function:helloWorld"
       }
     ]
