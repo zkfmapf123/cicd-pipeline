@@ -117,7 +117,7 @@ pipeline{
             slackSend(
                 channel: "#jenkins-notification",
                 color: "danger",
-                message: "Failure : Fail...  "
+                message: "Failure : Fail..."
             )
         }
 
