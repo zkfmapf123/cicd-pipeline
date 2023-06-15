@@ -22,6 +22,7 @@ pipeline{
 
     stages {
         stage ("Build Docker Image") {
+            
             steps {
                 slackSend(
                     channel: "#jenkins-notification",
