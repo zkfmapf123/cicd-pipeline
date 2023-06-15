@@ -125,7 +125,7 @@ pipeline{
             slackSend(
                 channel: "#jenkins-notification",
                 color: "good",
-                mesasge: " ------------------------- Finish -------------------------"
+                message: " ------------------------- Finish -------------------------"
             )
         }
     }
