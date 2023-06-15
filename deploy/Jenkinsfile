@@ -23,6 +23,14 @@ pipeline{
     stages {
         stage ("Build Docker Image") {
             steps {
+                slackSend (
+                    channel: "#jenkins-notification",
+                    color: "good",
+                    message: " ------------------------- ${env.BUILD_ID} ------------------------- "
+                )
+            }
+
+            steps {
                 sh "docker build -f ${params.DEPLOY_PATH}/Dockerfile.test -t ${DOCKER_TEST_IMAGE} ."
             }
             
@@ -113,6 +121,12 @@ pipeline{
         cleanup {
             sh("docker image prune -a -f")
             sh("docker container prune -f")
+            
+            slackSend(
+                changed:"#jenkins-notification"
+                color:"good"
+                mesasge:" ------------------------- Finish -------------------------"
+            )
         }
     }
 }
