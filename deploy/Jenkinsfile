@@ -16,7 +16,7 @@ pipeline{
         REGION = "ap-northeast-2"
         ECR_REPOSITORY = "${params.AWS_ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/ecr_practice"
 
-        DOCKER_IMAGE = "${ECR_REPOSITORY}:${params.DOCKER_IMAGE_NAME}_${params.DOCKER_TAG}"
+        DOCKER_IMAGE = "${ECR_REPOSITORY}:${params.DOCKER_IMAGE_NAME}_${env.BUILD_ID}"
         DOCKER_TEST_IMAGE = "${ECR_REPOSITORY}:_test_${params.DOCKER_TAG}"
     }
 
@@ -26,7 +26,7 @@ pipeline{
                 slackSend(
                     channel: "#jenkins-notification",
                     color: "good",
-                    message: " ------------------------- ${env.BUILD_ID} ------------------------- "
+                    message: " ------------------------- Jenkins Start ${env.BUILD_ID} ------------------------- "
                 )
             }
         }
