@@ -123,9 +123,9 @@ pipeline{
             sh("docker container prune -f")
             
             slackSend(
-                changed:"#jenkins-notification"
-                color:"good"
-                mesasge:" ------------------------- Finish -------------------------"
+                channel: "#jenkins-notification"
+                color: "good"
+                mesasge: " ------------------------- Finish -------------------------"
             )
         }
     }
